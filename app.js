@@ -10,6 +10,14 @@ const indexRouter = require("./routes/index");
 
 const app = express();
 
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("ui/build"));
+
+  app.get("/", (req, res, next) => {
+    res.sendFile(path.resolve(__dirname, "ui", "build", "index.html"));
+  });
+}
+
 app.use(async function (req, res, next) {
   const browser = await puppeteer.launch({
     args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage", "--disable-accelerated-2d-canvas", "--no-first-run", "--no-zygote", "--disable-gpu"],
