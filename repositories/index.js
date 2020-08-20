@@ -3,7 +3,7 @@ const showMultiple = async (page) => {
     const dots = await page.$$("div[class='Yi5aA ']");
 
     for (let i = 0; i < dots.length - 1; i++) {
-      await page.click("button[class='  _6CZji ']");
+      await page.click("button[class='  _6CZji   ']");
     }
 
     resolve();
@@ -13,7 +13,7 @@ const showMultiple = async (page) => {
 const isMultipleCheck = async (data, page) => {
   try {
     const isMultiple = await page.$("ul[class='vi798']");
-    const username = await page.$eval("div[class='PQo_0 RqtMr'] > div[class='e1e1d'] > a", (el) => el.textContent);
+    const username = await page.$eval("div[class='e1e1d']", (el) => el.textContent);
 
     if (isMultiple) {
       await showMultiple(page);
@@ -88,7 +88,7 @@ module.exports = {
           throw "Cannot find post!";
         }
 
-        await page.waitForSelector("div[class='_97aPb wKWK0']");
+        await page.waitForSelector("div[class='ltEKP']");
 
         await isMultipleCheck(data, page);
       }
