@@ -3,6 +3,7 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
+const puppeteer = require("puppeteer");
 
 // Routes
 const indexRouter = require("./routes/index");
@@ -16,6 +17,16 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.resolve(__dirname, "ui", "build", "index.html"));
   });
 }
+
+app.use(async function (req, res, next) {
+  const browser = await puppeteer.launch({
+    args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage", "--disable-accelerated-2d-canvas", "--no-first-run", "--no-zygote", "--disable-gpu"],
+    headless: true,
+  });
+  console.log("browser", browser);
+  req.puppeteerContext = browser;
+  next();
+});
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));

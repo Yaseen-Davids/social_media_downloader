@@ -1,5 +1,3 @@
-const puppeteer = require("puppeteer");
-
 const showMultiple = async (page) => {
   return await new Promise(async (resolve, reject) => {
     const dots = await page.$$("div[class='Yi5aA ']");
@@ -55,13 +53,9 @@ const downloadInstagramMedia = async (page, username) => {
 };
 
 module.exports = {
-  downloadSingleByUrl: async (url) => {
+  downloadSingleByUrl: async (context, url) => {
     try {
-      const browser = await puppeteer.launch({
-        args: ["--no-sandbox", "--disable-setuid-sandbox"],
-        headless: true,
-      });
-      const page = await browser.newPage();
+      const page = await context.newPage();
       const data = [];
 
       // tiktok doesn't seem to work when it detects debugger mode
@@ -100,7 +94,7 @@ module.exports = {
       }
 
       await page.close();
-      await browser.close();
+      await context.close();
       return data;
     } catch (error) {
       throw new Error(error);

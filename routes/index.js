@@ -10,7 +10,8 @@ router.get("/status", (req, res, next) => {
 router.post("/download/single", async (req, res, next) => {
   try {
     const { url } = req.body;
-    const data = await downloadSingleByUrl(url);
+    const context = req.puppeteerContext;
+    const data = await downloadSingleByUrl(context, url);
     const buffers = [];
     let chunks = [];
 
