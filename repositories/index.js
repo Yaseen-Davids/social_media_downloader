@@ -66,17 +66,17 @@ module.exports = {
       await page.goto(url);
 
       if (url.includes("tiktok")) {
-        await page.waitForSelector("div[class='jsx-2734628687 video-detail-container'] > div");
+        await page.waitForSelector("div[class='jsx-45460717 main-body page-with-header']");
 
-        const errorPage = await page.$("div[class='jsx-2734628687 video-detail-container'] > div > img");
+        const errorPage = await page.$("div[class='jsx-2985563530 video-detail-container'] > div > img");
 
         if (errorPage) {
           throw "Cannot find post!";
         }
 
-        const videoLink = await page.waitForSelector("video[class='jsx-3900254205 horizontal video-player']");
+        const videoLink = await page.waitForSelector("video[class='jsx-3536131567 horizontal video-player']");
         const videoUrl = await (await videoLink.getProperty("src")).jsonValue();
-        const username = await page.$eval("h2[class='jsx-2205738744 user-username']", (el) => el.textContent);
+        const username = await page.$eval("h2[class='jsx-1939796256 jsx-932449746 user-username underline']", (el) => el.textContent);
 
         data.push({ url: videoUrl, username, type: "video" });
       } else {
