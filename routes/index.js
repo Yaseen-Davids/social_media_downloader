@@ -3,13 +3,14 @@ const { downloadSingleByUrl } = require("../repositories");
 const router = express.Router();
 const request = require("request");
 
-router.get("/", (req, res, next) => {
-  res.render("index", { title: "Tiktok downloader API" });
+router.get("/status", (req, res, next) => {
+  return res.json({ message: "API IS RUNNING" });
 });
 
 router.post("/download/single", async (req, res, next) => {
   try {
     const { url } = req.body;
+    console.log(url);
     const context = req.puppeteerContext;
     const data = await downloadSingleByUrl(context, url);
     const buffers = [];
