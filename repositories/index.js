@@ -97,6 +97,7 @@ module.exports = {
       await context.close();
       return data;
     } catch (error) {
+      console.log(error);
       throw new Error(error);
     }
   },

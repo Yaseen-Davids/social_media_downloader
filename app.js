@@ -23,7 +23,6 @@ app.use(async function (req, res, next) {
     args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage", "--disable-accelerated-2d-canvas", "--no-first-run", "--no-zygote", "--disable-gpu"],
     headless: true,
   });
-  console.log("browser", browser);
   req.puppeteerContext = browser;
   next();
 });

@@ -37,12 +37,14 @@ router.post("/download/single", async (req, res, next) => {
         }
         resolve();
       } catch (error) {
+        console.log(error);
         reject(error);
       }
     });
 
     return res.json({ buffers }).end();
   } catch (error) {
+    console.log(error);
     return next(error);
   }
 });
