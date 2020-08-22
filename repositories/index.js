@@ -13,7 +13,7 @@ const showMultiple = async (page) => {
 const isMultipleCheck = async (data, page) => {
   try {
     const isMultiple = await page.$("div[class='JSZAJ  _3eoV-  IjCL9  WXPwG']");
-    const username = await page.$eval("a[class='sqdOP yWX7d     _8A5w5   ZIAjV ']", (el) => el.textContent);
+    const username = await page.$eval("a[class*='sqdOP yWX7d']", (el) => el.textContent);
 
     if (isMultiple) {
       await showMultiple(page);
