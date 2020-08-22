@@ -77,11 +77,17 @@ module.exports = {
         }
         const videoUrl = await (await videoLink.getProperty("src")).jsonValue();
 
-        let username = await page.$eval("div[class='jsx-442964640 author-info-content tt-author-info jsx-3783556929 jsx-242381890 horizontal'] > a:first-child > h3", (el) => (el ? el.textContent : null));
+        let usernameEl = await page.$("h2[class*='jsx-1939796256 jsx-932449746 user-username']");
 
-        if (!username) {
-          username = await page.$eval("h2[class='jsx-1939796256 jsx-932449746 user-username']", (el) => (el ? el.textContent : null));
+        if (!usernameEl) {
+          usernameEl = await page.$("h3[class*='author-uniqueId jsx-242381890']");
         }
+
+        if (!usernameEl) {
+          throw "Cannot find username!";
+        }
+
+        const username = await (await usernameEl.getProperty("textContent")).jsonValue();
 
         data.push({ url: videoUrl, username, type: "video" });
       } else {
