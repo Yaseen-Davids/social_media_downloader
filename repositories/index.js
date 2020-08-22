@@ -58,25 +58,30 @@ module.exports = {
       const page = await context.newPage();
       const data = [];
 
-      // tiktok doesn't seem to work when it detects debugger mode
-      await page.evaluateOnNewDocument(() => {
-        delete navigator.__proto__.webdriver;
-      });
+      await page.evaluateOnNewDocument(() => delete navigator.__proto__.webdriver); // tiktok doesn't seem to work when it detects debugger mode
+      await page.setViewport({ width: 800, height: 768 });
 
-      await page.goto(url);
+      await page.goto(url, { waitUntil: "networkidle2" });
 
       if (url.includes("tiktok")) {
-        await page.waitForSelector("div[class='jsx-45460717 main-body page-with-header']");
-
         const errorPage = await page.$("div[class='jsx-2985563530 video-detail-container'] > div > img");
 
         if (errorPage) {
           throw "Cannot find post!";
         }
 
-        const videoLink = await page.waitForSelector("video[class='jsx-3536131567 horizontal video-player']");
+        let videoLink = await page.$("video[class='jsx-3536131567 video-player']");
+
+        if (!videoLink) {
+          videoLink = await page.$("video[class='jsx-3536131567 horizontal video-player']");
+        }
         const videoUrl = await (await videoLink.getProperty("src")).jsonValue();
-        const username = await page.$eval("h2[class='jsx-1939796256 jsx-932449746 user-username underline']", (el) => el.textContent);
+
+        let username = await page.$eval("div[class='jsx-442964640 author-info-content tt-author-info jsx-3783556929 jsx-242381890 horizontal'] > a:first-child > h3", (el) => (el ? el.textContent : null));
+
+        if (!username) {
+          username = await page.$eval("h2[class='jsx-1939796256 jsx-932449746 user-username']", (el) => (el ? el.textContent : null));
+        }
 
         data.push({ url: videoUrl, username, type: "video" });
       } else {
