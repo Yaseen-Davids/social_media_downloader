@@ -13,7 +13,7 @@ const showMultiple = async (page) => {
 const isMultipleCheck = async (data, page) => {
   try {
     const isMultiple = await page.$("ul[class='vi798']");
-    const username = await page.$eval("div[class='e1e1d']", (el) => el.textContent);
+    const username = await page.$eval("div[class='e1e1d'] > a", (el) => el.textContent);
 
     if (isMultiple) {
       await showMultiple(page);
@@ -88,7 +88,7 @@ module.exports = {
           throw "Cannot find post!";
         }
 
-        // await page.waitForSelector("div[class='ltEKP']");
+        await page.waitForSelector("div[class='Kj7h1 _0gdQ3 ']");
 
         await isMultipleCheck(data, page);
       }
