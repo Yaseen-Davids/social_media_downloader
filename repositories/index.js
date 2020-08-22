@@ -88,7 +88,7 @@ module.exports = {
           throw "Cannot find post!";
         }
 
-        await page.waitForSelector("div[class='ltEKP']");
+        // await page.waitForSelector("div[class='ltEKP']");
 
         await isMultipleCheck(data, page);
       }
