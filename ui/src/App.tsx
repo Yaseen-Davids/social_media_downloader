@@ -81,6 +81,7 @@ const App = () => {
     setPlaying({ ...playing, open: false });
     try {
       const result = await downloadSingleVideo(fields.url, direct);
+      console.log("result", result);
       setContent(result);
       setSuccess(true);
       setLoading(false);
