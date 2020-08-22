@@ -21,7 +21,7 @@ if (process.env.NODE_ENV === "production") {
 app.use(async function (req, res, next) {
   const browser = await puppeteer.launch({
     args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage", "--disable-accelerated-2d-canvas", "--no-first-run", "--no-zygote", "--disable-gpu", "--start-maximized"],
-    headless: true,
+    headless: false,
   });
   req.puppeteerContext = browser;
   next();
