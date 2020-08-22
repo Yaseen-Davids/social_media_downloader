@@ -1,10 +1,23 @@
 const express = require("express");
-const { downloadSingleByUrl } = require("../repositories");
+const { downloadSingleByUrl, getTiktokVideoUrl } = require("../repositories");
 const router = express.Router();
 const request = require("request");
 
 router.get("/status", (req, res, next) => {
   return res.json({ message: "API IS RUNNING" });
+});
+
+router.post("/download/tiktok", async (req, res, next) => {
+  try {
+    const { url } = req.body;
+    const context = req.puppeteerContext;
+
+    const videoData = await getTiktokVideoUrl(context, url);
+
+    return res.json({ videoData });
+  } catch (error) {
+    return next(error);
+  }
 });
 
 router.post("/download/single", async (req, res, next) => {
