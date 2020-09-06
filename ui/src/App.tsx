@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Input, Button, Typography, Alert, Spin, Switch, List } from "antd";
 import styled from "styled-components";
 import { Form, Field } from "react-final-form";
@@ -72,6 +72,7 @@ const App = () => {
   const [direct, setDirect] = useState<boolean>(false);
   const [content, setContent] = useState<Content[]>([]);
   const [playing, setPlaying] = useState<{ url: string; fileName: string; type: string | null; open: boolean }>({ url: "", fileName: "", type: null, open: false });
+  const [value, setValue] = useState("");
 
   const handleSubmit = async (fields: any) => {
     setLoading(true);
@@ -80,10 +81,11 @@ const App = () => {
     setSuccess(false);
     setPlaying({ ...playing, open: false });
     try {
-      const result = await downloadSingleVideo(fields.url, direct);
+      const result = await downloadSingleVideo(value, direct);
       setContent(result);
       setSuccess(true);
       setLoading(false);
+      setValue("");
       setError({ message: "", show: false });
     } catch (error) {
       setError({ message: error, show: true });
@@ -95,11 +97,18 @@ const App = () => {
     setPlaying({ ...media, open: true });
   };
 
+  const pasteClipboard = async () => {
+    const clipboard = await navigator.clipboard.readText();
+    if (clipboard.includes("instagram") || clipboard.includes("tiktok")) {
+      setValue(clipboard);
+    }
+  }
+
   return (
     <Container>
       <FormWrapper>
         <Wrapper>
-          <Title level={2}>Instagram & Tiktok Downloader</Title>
+          <a href="/"><Title level={2}>Instagram & Tiktok Downloader</Title></a>
           <Form
             onSubmit={handleSubmit}
             render={({ handleSubmit }) => (
@@ -109,7 +118,14 @@ const App = () => {
                     <Field
                       name="url"
                       render={({ input }) => (
-                        <Input {...input} autoComplete="off" placeholder="Enter a URL" />
+                        <Input
+                          {...input}
+                          value={value}
+                          autoComplete="off"
+                          placeholder="Enter a URL"
+                          onFocus={() => pasteClipboard()}
+                          onChange={(e) => setValue(e.target.value)}
+                        />
                       )}
                     />
                     <Button type="primary" htmlType="submit">Submit</Button>
