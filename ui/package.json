@@ -13,7 +13,7 @@
     "@types/react-router-dom": "^5.1.5",
     "@types/styled-components": "^5.0.1",
     "antd": "^4.4.2",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "final-form": "^4.20.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
